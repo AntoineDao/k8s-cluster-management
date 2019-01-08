@@ -1,0 +1,15 @@
+apiVersion: "authentication.istio.io/v1alpha1"
+kind: "Policy"
+metadata:
+  name: "jwt-auth"
+spec:
+  targets:
+  - name: project
+  peers:
+  - mtls: {}
+  origins:
+  - jwt:
+      issuer: "auth@auth.app.com"
+      jwksUri: "http://api.pollination.cloud/users/auth/public_key"
+  principalBinding: USE_ORIGIN
+---

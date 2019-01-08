@@ -1,0 +1,102 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: pg-database
+  labels:
+    app: database
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: pg-database
+      labels:
+        app: database
+      annotations:
+        pod.beta.kubernetes.io/init-containers: '[
+            {
+                "name": "create-pgdata-dir",
+                "image": "busybox:1.25.0",
+                "imagePullPolicy": "IfNotPresent"
+                "command": ["mkdir", "/var/lib/postgresql/data/pgdata/"],
+                "volumeMounts": [
+                    {
+                        "name": "pg-volume",
+                        "mountPath": "/var/lib/postgresql/data"
+                    }
+                ]
+            }
+        ]'
+    spec:
+      containers:
+        - name: pg-database
+          image: postgres:10.6
+          ports:
+          - containerPort: 5432
+            name: postgres
+          volumeMounts:
+          - mountPath: "/var/lib/postgresql/data/"
+            name: pg-volume
+          - mountPath: "/etc/postgresql/"
+            name: pg-config-volume
+          env:
+          - name: POSTGRES_USER
+            valueFrom:
+              configMapKeyRef:
+                name: db-config
+                key: pg-user
+          - name: PGDATA
+            value: /var/lib/postgresql/data/pgdata
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-secret
+                key: pg-password
+      volumes:
+        - name: pg-volume
+          persistentVolumeClaim:
+            claimName: db-vol
+        - name: pg-config-volume
+          configMap:
+            name: db-config
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: db-service
+  labels:
+    app: database
+spec:
+  ports:
+  - port: 5432
+  selector:
+    app: database
+  # type: NodePort
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: db-service-external
+  namespace: default
+spec:
+  hosts:
+  - "*" # name of internal postgres service
+  gateways:
+  - api-gateway
+  tcp:
+  - match:
+    - port: 5432
+    route:
+    - destination:
+        host: db-service
+        port:
+          number: 5432
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: db-service
+spec:
+  host: db-service.default.svc.cluster.local
+  trafficPolicy:
+   tls:
+     mode: ISTIO_MUTUAL
