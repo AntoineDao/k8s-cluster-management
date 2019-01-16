@@ -51,7 +51,7 @@ Now we can use the credentials that are saved locally to interact with our clust
 `kubectl`. `kubectl` is a command-line tool to deploy and manage applications on
 Kubernetes. You can install `kubectl` by following the instructions [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl).
 
-Now enter the folder where the config file is created and run `grep -e name:.* -m 1 config`. 
+Now enter the folder where the config file is created and run `grep name -m 1 config`. 
 
 You will notice the kubectl context will not be called `ladybug` but `do-lon1-ladybug` or
 something like `do-<region name>-ladybug`. Switch to this context by running
@@ -59,7 +59,7 @@ something like `do-<region name>-ladybug`. Switch to this context by running
 
 ```console
 $ cd .kube
-/.kube$ grep -e name:.* -m 1 config
+/.kube$ grep name -m 1 config
   name: do-lon1-ladybug
 /.kube$ kubectl config use-context do-lon1-ladybug
 Switched to context "do-lon1-ladybug".
@@ -74,11 +74,22 @@ fervent-poitras-836n   Ready    <none>   4m13s   v1.13.1
 fervent-poitras-83a9   Ready    <none>   4m14s   v1.13.1
 ```
 
-Or you can use `--kubeconfig` flag:
+Or you can do it all in one line by using `--kubeconfig` flag:
 
 ```console
-/.kube$ kubectl --kubeconfig="config" get nodes
+$ kubectl --kubeconfig=".kube/config" get nodes
 NAME                   STATUS   ROLES    AGE     VERSION
 fervent-poitras-836n   Ready    <none>   4m13s   v1.13.1
 fervent-poitras-83a9   Ready    <none>   4m14s   v1.13.1
+```
+
+To destroy the cluster you can use the following command:
+```console
+$ doctl k8s cluster delete ladybug -v
+Warning: Are you sure you want to delete this Kubernetes cluster (y/N) ? y
+Notice: cluster deleted, removing credentials
+
+Notice: removing cluster credentials from kubeconfig file found in "<FILEPATH>/.kube/config"
+
+Notice: cluster was set as current context for kubectl. It has been removed, you might want to set a new one.
 ```
