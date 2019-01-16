@@ -73,3 +73,12 @@ NAME                   STATUS   ROLES    AGE     VERSION
 fervent-poitras-836n   Ready    <none>   4m13s   v1.13.1
 fervent-poitras-83a9   Ready    <none>   4m14s   v1.13.1
 ```
+
+Or you can use `--kubeconfig` flag:
+
+```console
+/.kube$ kubectl --kubeconfig="config" get nodes
+NAME                   STATUS   ROLES    AGE     VERSION
+fervent-poitras-836n   Ready    <none>   4m13s   v1.13.1
+fervent-poitras-83a9   Ready    <none>   4m14s   v1.13.1
+```
