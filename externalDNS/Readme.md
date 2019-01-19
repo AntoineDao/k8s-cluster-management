@@ -1,4 +1,10 @@
-# External DNS Setup
+# External DNS
+
+External DNS can be managed using a pod inside the kubernetes cluster. This service will need to access the digital ocean API in order to work. It will use a Digital Ocean token to do so. We must encode it as a secret. If you replace the current string in the `do-token` file with a valid Digital Ocean token and then run the command below then the token will be accessible by the DNS management pod.
+
+> kubectl create secret generic do-api --from-file=./do-token
+
+# External DNS Setup (not required if using Istio)
 In order for services within the cluster to be publicly available we need to setup the DNS records. [External DNS](https://github.com/kubernetes-incubator/external-dns) provides a descent level of integration with most cloud providers to do so. In this case we are using Digital Ocean so the files provided will work for this cloud provider specifically.
 
 1. Create the external DNS deployment which will ensure kubernetes Load Balancer objects will be added to the DNS records for the domain managed by Digital Ocean
