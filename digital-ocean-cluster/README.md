@@ -59,16 +59,16 @@ something like `do-<region name>-ladybug`. Switch to this context by running
 
 ```console
 $ cd .kube
-/.kube$ grep name -m 1 config
+$ grep name -m 1 config
   name: do-lon1-ladybug
-/.kube$ kubectl config use-context do-lon1-ladybug
+$ kubectl config use-context do-lon1-ladybug
 Switched to context "do-lon1-ladybug".
 ```
 
 And check that you can access the cluster by running `kubectl get nodes`
 
 ```console
-~/.kube$ kubectl get nodes
+$ kubectl get nodes
 NAME                   STATUS   ROLES    AGE     VERSION
 fervent-poitras-836n   Ready    <none>   4m13s   v1.13.1
 fervent-poitras-83a9   Ready    <none>   4m14s   v1.13.1

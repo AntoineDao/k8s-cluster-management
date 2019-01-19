@@ -12,6 +12,9 @@ To deploy Dashboard execute following command:
 
 `kubectl apply -f dashboard-deployment.yml`
 
+You can also use the file from Kubernetes repository:
+`kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml`
+
 ```shell
 $ kubectl apply -f dashboard-deployment.yml
 secret/kubernetes-dashboard-certs created
