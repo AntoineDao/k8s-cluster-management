@@ -17,7 +17,7 @@ In order for services within the cluster to be publicly available we need to set
 Connecting to an external DNS normally is cool. Doing with Istio is like cool on steroids. In order to do so you should follow the steps below. You can also get mor information on this deployment type [here](https://github.com/kubernetes-incubator/external-dns/blob/master/docs/tutorials/istio.md).
 
 1. Create the external DNS deployment which will be in charge of creating subdomain name DNS records for the Digital Ocean Load Balancer whenever new Istio gateways are created
-> kubctel create -f istio-externalDNS.yml
+> kubectl create -f istio-externalDNS.yml
 
 2. Test out this deployment by creating a simple gateway and service
 > kubectl create -f istio-test/httpbin.yml
