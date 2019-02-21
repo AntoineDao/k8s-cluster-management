@@ -1,0 +1,2 @@
+# Istio Policies
+Policies in Istio are used to manage both rate limits and service denial based on something else than end user authentication. More documentation can be found [here](https://istio.io/docs/tasks/policy-enforcement/).
