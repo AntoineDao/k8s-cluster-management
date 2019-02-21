@@ -1,0 +1,17 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: api-gateway-certificate
+  namespace: istio-system
+spec:
+  secretname: istio-ingressgateway-certs
+  issuerRef:
+    name: letsencrypt-issuer
+    kind: ClusterIssuer
+  commonName: "*.pollination.cloud"
+  acme:
+    config:
+    - dns01:
+        provider: cloud-dns-provider
+      domains:
+      - "*.pollination.cloud"
