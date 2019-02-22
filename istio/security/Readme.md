@@ -12,7 +12,7 @@ The state of mTLS can be verified for individual services by typing the followin
 More info on checking mTLS can be found [here](https://istio.io/docs/tasks/security/mutual-tls/#verify-mutual-tls-configuration).
 
 ## End User Authentication
-Rather than having each individual microservice implement it's own authentication code, it is easier to set authentication rules at the service-mesh level. Istio currently supports JWT authentication and requires a jwk issuer address (http reachable endpoint containing the public decryption key of a given JWT issuer). 
+Rather than having each individual microservice implement it's own authentication code, it is easier to set authentication rules at the service-mesh level. Istio currently supports JWT authentication and requires a JWT issuer address (http reachable endpoint containing the public decryption key of a given JWT issuer). 
 
 In this scenario we choose to implement this policy on a namespace level where all services requiring authentication will be grouped. This namespace is called `api-private`.
 
