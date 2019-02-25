@@ -12,5 +12,10 @@ Once everything is ready you can configure ingress into the service mesh by runn
 ## Egress
 The `egress.yml` file contains external traffic policies for the mesh. ~~Egress to TCP services seems moe complex as it requires a [fixed set of IP addresses](https://istio.io/blog/2018/egress-tcp/) rather than using DNS resolution. Probably worth investigating [docs](https://istio.io/docs/reference/config/istio.networking.v1alpha3/#ServiceEntry-Endpoint) to verify this.~~ Seems we can get away with DNS resolution for TCP traffic on non-http ports. In this case we allow services inside the mesh to access the following external services:
 * **DigitalOcean API***: In order to faciltiate cluster automation from within (eg: node scaling or external DNS management)
-* **Postgres Database Server**: The external database 
+* **Postgres Database Server**: The external database. 
+    * DB_ADDRESS - domain name (or IP) of database server.
+    * DB_PORT - port on which to reach the database server. Example: `5432` for a standard Postgres server.
 * **Object Storage Server**: The external Object Storage service
+    * BUCKET_ADDRESS - domain name of the server where bucket is hosted. Example: `ams1.digitaloceanspaces.com` for a DigitalOcean Spaces server in Amsterdam.
+
+    **NOTE**: You will need to replace the values preceded with `$` in the `egress.yml` file.
