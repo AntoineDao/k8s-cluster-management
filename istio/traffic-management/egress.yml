@@ -1,10 +1,11 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: ServiceEntry
 metadata:
-  name: digitalocean-api
+  name: digitalocean-services
 spec:
   hosts:
   - api.digitalocean.com
+  - $BUCKET_ADDRESS
   ports:
   - number: 443
     name: https
@@ -30,3 +31,36 @@ spec:
         port:
           number: 443
       weight: 100
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: digitalocean-space
+spec:
+  hosts:
+  - $BUCKET_ADDRESS
+  tls:
+  - match:
+    - port: 443
+      sni_hosts:
+      - $BUCKET_ADDRESS
+    route:
+    - destination:
+        host: $BUCKET_ADDRESS
+        port:
+          number: 443
+      weight: 100
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: postgres-database
+spec:
+  hosts:
+  - $DB_ADDRESS
+  ports:
+  - number: 25060
+    name: tcp
+    protocol: TCP
+  resolution: DNS
+  location: MESH_EXTERNAL

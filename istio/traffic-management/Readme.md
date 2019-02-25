@@ -10,7 +10,7 @@ Once everything is ready you can configure ingress into the service mesh by runn
 > kubectl apply -f ingress.yml
 
 ## Egress
-The `egress.yml` file contains external traffic policies for the mesh. In this case we allow services inside the mesh to access the following external services:
+The `egress.yml` file contains external traffic policies for the mesh. ~~Egress to TCP services seems moe complex as it requires a [fixed set of IP addresses](https://istio.io/blog/2018/egress-tcp/) rather than using DNS resolution. Probably worth investigating [docs](https://istio.io/docs/reference/config/istio.networking.v1alpha3/#ServiceEntry-Endpoint) to verify this.~~ Seems we can get away with DNS resolution for TCP traffic on non-http ports. In this case we allow services inside the mesh to access the following external services:
 * **DigitalOcean API***: In order to faciltiate cluster automation from within (eg: node scaling or external DNS management)
 * **Postgres Database Server**: The external database 
 * **Object Storage Server**: The external Object Storage service
