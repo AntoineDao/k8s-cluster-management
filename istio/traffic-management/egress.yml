@@ -59,7 +59,7 @@ spec:
   hosts:
   - $DB_ADDRESS
   ports:
-  - number: 25060
+  - number: $DB_PORT
     name: tcp
     protocol: TCP
   resolution: DNS
