@@ -55,7 +55,7 @@ $ kubectl label namespace default istio-injection=enabled
 
 ## Service Mesh Configuation
 The service mesh can be configured to manage authentication, tls encryption, and traffic routing. The Istio documentation divides the main aspects of mesh configuration into 4 categories. For this project each category is represented by a folder which contains configuration and documentation to help setup the service mesh:
-1. [Traffic Management](/traffic-management)
-2. [Security](/security) - Partially implemented
-3. [Policies](/policies) - Not implemented yet
-4. [Telemetry](/telemetry) - Partially implemented
+1. [Traffic Management](/istio/traffic-management)
+2. [Security](/istio/security) - Partially implemented
+3. [Policies](/istio/policies) - Not implemented yet
+4. [Telemetry](/istio/telemetry) - Partially implemented
