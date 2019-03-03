@@ -7,6 +7,7 @@ The [QuickStart](https://github.com/argoproj/argo-events/blob/master/docs/quicks
 ### Argo Events Install
 ```console
 kubectl create namespace argo-events
+kubectl label ns/argo-events istio-injection=disabled
 kubectl apply -n argo-events -f https://raw.githubusercontent.com/argoproj/argo-events/master/hack/k8s/manifests/argo-events-sa.yaml
 kubectl apply -n argo-events -f https://raw.githubusercontent.com/argoproj/argo-events/master/hack/k8s/manifests/argo-events-cluster-roles.yaml
 kubectl apply -n argo-events -f https://raw.githubusercontent.com/argoproj/argo-events/master/hack/k8s/manifests/sensor-crd.yaml
@@ -23,6 +24,11 @@ kubectl apply -n argo-events -f argo-install.yml # corresponds to https://raw.gi
 kubectl create rolebinding default-admin --clusterrole=admin --serviceaccount=default:default # Creates admin role, which we might demote in future
 ```
 
+### Assembly-Line Namespace
+In order to facilitate segregating argo batch jobs from long running services in the cluster we will create a new namespace: `assembly-line`. This namespace will also hold common credentials and secrets batch jobs can use to access different external resources (Postgres and S3). The credentials required are listed in the `assembly-line.yml` file.
+
+Note: For the moment this namespace does not allow istio-sidecar injection because of issues killing the side-car pod once a job is complete.
+
 ### Check The UI
 
 ```console
@@ -35,7 +41,6 @@ Here is a quick example to test that everything has been installed properly
 
 ### 1. Create a webhook gateway
 ```console
-kubectl apply -n argo-events -f example/webhook-gateway-configmap.yml
 kubectl apply -n argo-events -f example/webhook-gateway-http.yml
 ```
 

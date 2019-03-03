@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name:  assembly-line
+  labels:
+    istio-injection: disabled
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name:  data-access
+data:
+   db-user:  BASE64_ENCODED_VALUE
+   db-password: BASE64_ENCODED_VALUE
+   db-server: BASE64_ENCODED_VALUE
+   db-port: BASE64_ENCODED_VALUE
+   bucket-server: BASE64_ENCODED_VALUE
+   bucket-access-key: BASE64_ENCODED_VALUE
+   bucket-secret-access-key: BASE64_ENCODED_VALUE
+type: Opaque

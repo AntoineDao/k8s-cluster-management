@@ -1,7 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webhook-gateway-configmap
+  namespace: argo-events
+data:
+  index: |-
+    port: "12000"
+    endpoint: "/index"
+    method: "POST"
+  foo: |-
+    port: "12000"
+    endpoint: "/foo"
+    method: "POST"
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Gateway
 metadata:
   name: webhook-gateway-http
+  namespace: argo-events
   labels:
     gateways.argoproj.io/gateway-controller-instanceid: argo-events
     gateway-name: "webhook-gateway-http"
@@ -17,6 +33,7 @@ spec:
   deploySpec:
     metadata:
       name: "webhook-gateway-http"
+      namespace: argo-events
       labels:
         gateway-name: "webhook-gateway-http"
     spec:
@@ -32,12 +49,14 @@ spec:
       serviceAccountName: "argo-events-sa"
   serviceSpec:
     metadata:
-      name: webhook-gateway-svc
+      name: webhook-gateway-http
+      namespace: argo-events
     spec:
       selector:
         gateway-name: "webhook-gateway-http"
       ports:
-        - port: 80
+        - name: http
+          port: 80
           targetPort: 12000
       type: ClusterIP
   watchers:

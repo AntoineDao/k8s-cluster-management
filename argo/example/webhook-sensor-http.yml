@@ -2,6 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
   name: webhook-sensor-http
+  namespace: argo-events
   labels:
     sensors.argoproj.io/sensor-controller-instanceid: argo-events
 spec:
@@ -17,10 +18,22 @@ spec:
     type: "HTTP"
     http:
       port: "9300"
+  serviceSpec:
+    metadata:
+      name: webhook-sensor-http-svc
+      namespace: argo-events
+    spec:
+      selector:
+        name: webhook-sensor-http
+      ports:
+        - name: http
+          port: 9300
+          targetPort: 9300
+      type: ClusterIP
   triggers:
     - name: webhook-workflow-trigger
       resource:
-        namespace: argo-events
+        namespace: assembly-line
         group: argoproj.io
         version: v1alpha1
         kind: Workflow
@@ -30,6 +43,7 @@ spec:
             kind: Workflow
             metadata:
               generateName: hello-world-
+              namespace: assembly-line
             spec:
               entrypoint: whalesay
               templates:
